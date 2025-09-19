@@ -2,40 +2,43 @@ require 'gosu'
 require_relative 'assets/ball'
 require_relative 'assets/paddle'
 
-class PingPong < Gosu::Window
+class Pong < Gosu::Window
 
   def initialize 
-    @winDimX = 1920
-    @winDimY = 1080
+    @win_dim_x = 1920
+    @win_dim_y = 1080
 
-    super @winDimX, @winDimY
+    super @win_dim_x, @win_dim_y
 
-    @paddleImg = Gosu::Image.new('media/img/paddle.png')
-    #@ballImg = Gosu::Image.new('media/img/ball.png')
+    @paddle_img = Gosu::Image.new('media/img/paddle.png')
+    @ball_img = Gosu::Image.new('media/img/ball.png')
     
-    @xPos = 100
-    @yPos = @winDimX-@xPos-@paddleImg.width
+    @player1_pos = 0
+    @player2_pos = @win_dim_x - @paddle_img.width
 
     
 
-    @player1 = Paddle.new(@paddleImg, Gosu::KB_W, Gosu::KB_S, @xPos, @winDimY/2, @winDimX, @winDimY)
-    @player2 = Paddle.new(@paddleImg, Gosu::KB_UP, Gosu::KB_DOWN, @yPos, @winDimY/2, @winDimX, @winDimY)
+    @player1 = Paddle.new(@paddle_img, Gosu::KB_W, Gosu::KB_S, @player1_pos, @win_dim_y/2, @win_dim_x, @win_dim_y)
+    @player2 = Paddle.new(@paddle_img, Gosu::KB_UP, Gosu::KB_DOWN, @player2_pos, @win_dim_y/2, @win_dim_x, @win_dim_y)
 
-    #@ball =  Ball.new()
+    @ball =  Ball.new(@ball_img, @win_dim_x/2, @win_dim_y/2, @win_dim_x, @win_dim_y)
   end
 
   def update 
     @player1.update
     @player2.update
-    
+
+    @ball.update(@player1.y, @player2.y, @paddle_img.width, @paddle_img.height)
   end
 
   def draw
     @player1.draw
     @player2.draw
+
+    @ball.draw
   end
 
 end
 
-window = PingPong.new
+window = Pong.new
 window.show

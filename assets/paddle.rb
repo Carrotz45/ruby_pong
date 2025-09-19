@@ -1,17 +1,19 @@
 class Paddle
 
-  def initialize(img, upButton, downButton, x, y, xDim, yDim)
+  attr_reader :x, :y
+
+  def initialize(img, up_button, down_button, x, y, x_dim, y_dim)
     @sprite = img
 
-    @vel = 10
+    @vel = 17
     @x = x
     @y = y
 
-    @xDim = xDim
-    @yDim = yDim
+    @x_dim = x_dim
+    @y_dim = y_dim
 
-    @upB = upButton
-    @downB = downButton
+    @up_button = up_button
+    @down_button = down_button
 
   end
 
@@ -27,9 +29,9 @@ class Paddle
 
     puts(@y)
 
-    if (Gosu.button_down? @upB) && @y > 0 
+    if (Gosu.button_down? @up_button) && @y > 0 
       moveUp()
-    elsif (Gosu.button_down? @downB) && @y < @yDim-@sprite.height
+    elsif (Gosu.button_down? @down_button) && @y < @y_dim-@sprite.height
       moveDown()
     end
   end
@@ -39,13 +41,4 @@ class Paddle
     @sprite.draw(@x, @y)
   end
 
-  # def x
-
-  # end
-
-  # def y
-  # end
-  
 end
-
-# ex player1 = 
