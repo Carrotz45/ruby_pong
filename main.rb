@@ -29,6 +29,8 @@ class Pong < Gosu::Window
     @player2.update
 
     @ball.update(@player1.y, @player2.y, @paddle_img.width, @paddle_img.height)
+
+    puts @ball.points
   end
 
   def draw

@@ -27,8 +27,6 @@ class Paddle
 
   def update
 
-    puts(@y)
-
     if (Gosu.button_down? @up_button) && @y > 0 
       moveUp()
     elsif (Gosu.button_down? @down_button) && @y < @y_dim-@sprite.height
