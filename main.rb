@@ -1,4 +1,5 @@
 require 'gosu'
+require_relative 'assets/grill'
 require_relative 'assets/ball'
 require_relative 'assets/paddle'
 
@@ -21,16 +22,20 @@ class Pong < Gosu::Window
     @player1 = Paddle.new(@paddle_img, Gosu::KB_W, Gosu::KB_S, @player1_pos, @win_dim_y/2, @win_dim_x, @win_dim_y)
     @player2 = Paddle.new(@paddle_img, Gosu::KB_UP, Gosu::KB_DOWN, @player2_pos, @win_dim_y/2, @win_dim_x, @win_dim_y)
 
-    @ball =  Ball.new(@ball_img, @win_dim_x/2, @win_dim_y/2, @win_dim_x, @win_dim_y)
+    @ball =  Ball.new(@ball_img, @win_dim_x/2, @win_dim_y/2, self)
+  end
+
+  def right
+    self.width
   end
 
   def update 
     @player1.update
     @player2.update
 
-    @ball.update(@player1.y, @player2.y, @paddle_img.width, @paddle_img.height)
+    @ball.update(@player1, @player2)
 
-    puts @ball.points
+    puts "player one points: #{@ball.points_p1}, player two points: #{@ball.points_p2}"
   end
 
   def draw

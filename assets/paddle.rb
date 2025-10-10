@@ -1,4 +1,4 @@
-class Paddle
+class Paddle < Grill
 
   attr_reader :x, :y
 
@@ -29,7 +29,7 @@ class Paddle
 
     if (Gosu.button_down? @up_button) && @y > 0 
       moveUp()
-    elsif (Gosu.button_down? @down_button) && @y < @y_dim-@sprite.height
+    elsif (Gosu.button_down? @down_button) && @y < @y_dim-self.height
       moveDown()
     end
   end

@@ -1,57 +1,102 @@
-class Ball
+class Ball < Grill
 
-  attr_reader :points
+  attr_reader :points_p1, :points_p2
 
-  def initialize(img, x, y, x_dim, y_dim)
+  def initialize(img, x, y, window)
 
     @sprite = img
+    @x = window.width / 2
+    @y = window.width / 2
+    @window = window
 
-    @x = x
-    @y = y
-
-    @x_dim = x_dim
-    @y_dim = y_dim
+    #@x_dim = window.width
+    #@y_dim = window.height
 
     @x_vel = 15.0
     @y_vel = 15.0
     @angle = [3, 2, 1, 0, -1, -2, -3].sample
 
-    @points = 0
+    @points_p1 = 0
+    @points_p2 = 0
 
   end
 
-  def update(paddle1_y, paddle2_y, paddle_width, paddle_height)
+  def bounce_x
+    @x_vel = (@x_vel + @angle) * - 1
+  end
 
-    @paddle1_y = paddle1_y
-    @paddle2_y = paddle2_y
+  def bounce_y
+    @y_vel = (@y_vel + @angle) * - 1
+  end
 
-    @paddle_width = paddle_width
-    @paddle_height = paddle_height
+  def right=(x)
+    @x = x - self.width
+  end
 
-    if @x + @sprite.width >= @x_dim - @paddle_width && @y >= @paddle2_y && @y + @sprite.height <= @paddle2_y + @paddle_height
+  def left=(x)
+    @x = x
+  end
+
+  def top=(y)
+    @y = y
+  end
+
+  def bottom=(y)
+    @y = y - self.height
+  end
+
+
+  def update(paddle1, paddle2)
+
+    #right paddle
+    if self.right >= paddle2.left &&
+      self.left <= paddle2.right &&
+      self.top <= paddle2.bottom &&
+      self.bottom >= paddle2.top
+       
+      self.bounce_x
+
+      self.right = (paddle2.left - 1)
+
+    #left paddle
+    elsif self.left <= paddle1.right&&
+      self.right >= paddle1.left
+      self.top >= paddle2.top &&
+      self.bottom <= paddle2.bottom
       
-      @x = @x_dim-(@paddle_width + @sprite.width)
-      x_vel = (@x_vel + @angle) * -1
+      self.bounce_x
 
-    elsif @x <= @paddle_width && @y >= @paddle1_y && @y + @sprite.height <= @paddle1_y + @paddle_height
+      self.left = (paddle1.right + 1)
 
-      @x = @paddle_width
-      @x_vel = (@x_vel + @angle) * -1
+    #right wall
+    elsif self.right > @window.width
 
-    elsif @x >= @x_dim - @sprite.width || @x <= 0 
+      self.bounce_x
 
-      @x_vel = (@x_vel + @angle) * -1
-      @points = @points + 1
+      @points_p2 = @points_p2 + 1
+
+    #left wall
+    elsif self.left <= 0
+
+      self.bounce_x
+
+      @points_p1 = @points_p2 + 1
+
+    #bottom wall
+    elsif self.bottom > @window.height
+
+      self.bounce_y
+
+      self.bottom = (@window.height-1)
+
+    #top wall
+    elsif self.top < 0
+
+      self.bounce_y
+
+      self.top = (1)
 
     end
-
-    if @y >= @y_dim - @sprite.height|| @y <= 0
-
-      @y_vel = (@y_vel + @angle) * -1
-
-    end
-
-
 
     @x += @x_vel
     @y += @y_vel
