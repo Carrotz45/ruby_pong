@@ -5,7 +5,7 @@ class Paddle < Grill
   def initialize(img, up_button, down_button, x, y, x_dim, y_dim)
     @sprite = img
 
-    @vel = 17
+    @vel = 25
     @x = x
     @y = y
 

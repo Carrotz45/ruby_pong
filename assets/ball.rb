@@ -12,8 +12,8 @@ class Ball < Grill
     #@x_dim = window.width
     #@y_dim = window.height
 
-    @x_vel = 15.0
-    @y_vel = 15.0
+    @x_vel = 30
+    @y_vel = 30
     @angle = [3, 2, 1, 0, -1, -2, -3].sample
 
     @points_p1 = 0
@@ -30,6 +30,7 @@ class Ball < Grill
   end
 
   def right=(x)
+    puts "wat: #{x}"
     @x = x - self.width
   end
 
@@ -48,25 +49,21 @@ class Ball < Grill
 
   def update(paddle1, paddle2)
 
+
     #right paddle
-    if self.right >= paddle2.left &&
-      self.left <= paddle2.right &&
-      self.top <= paddle2.bottom &&
-      self.bottom >= paddle2.top
-       
-      self.bounce_x
-
-      self.right = (paddle2.left - 1)
-
-    #left paddle
-    elsif self.left <= paddle1.right&&
-      self.right >= paddle1.left
-      self.top >= paddle2.top &&
-      self.bottom <= paddle2.bottom
+    if self.right >= paddle2.left && self.left <= paddle2.right && self.top <= paddle2.bottom && self.bottom >= paddle2.top
       
       self.bounce_x
 
-      self.left = (paddle1.right + 1)
+      self.right=(paddle2.left - 1)
+
+    #left paddle
+      elsif self.left <= paddle1.right && self.right >= paddle1.left && self.top <= paddle1.bottom && self.bottom >= paddle1.top
+      
+      self.left=(paddle1.right + 1)
+
+      
+      self.bounce_x
 
     #right wall
     elsif self.right > @window.width
@@ -87,7 +84,7 @@ class Ball < Grill
 
       self.bounce_y
 
-      self.bottom = (@window.height-1)
+      self.bottom=(@window.height-1)
 
     #top wall
     elsif self.top < 0
